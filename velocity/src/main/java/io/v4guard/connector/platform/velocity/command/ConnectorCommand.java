@@ -23,7 +23,7 @@ public class ConnectorCommand implements CommandClass {
 
     private final VelocityInstance plugin;
     private final List<String> defaultMessage = List.of(
-            "§d▲ §lV4GUARD §7Correct usage: /v4guard <blacklist>/<whitelist>"
+            "§d▲ §lV4GUARD §7Correct usage: /v4guard <blacklist>/<whitelist/bypass>"
     );
 
     public ConnectorCommand(VelocityInstance plugin) {

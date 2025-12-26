@@ -3,11 +3,9 @@ package io.v4guard.connector.platform.bungee.task;
 import com.github.benmanes.caffeine.cache.Cache;
 import io.v4guard.connector.common.UnifiedLogger;
 import io.v4guard.connector.common.compatibility.kick.AwaitingKick;
-import net.md_5.bungee.UserConnection;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
-import net.md_5.bungee.protocol.Protocol;
 
 import java.util.logging.Level;
 
@@ -36,9 +34,6 @@ public class AwaitingKickTask implements Runnable {
                 awaitedKickTaskCache.invalidate(playerName);
                 return;
             }
-
-            if (!(player instanceof UserConnection userConnection)
-                    || userConnection.getCh().getEncodeProtocol() != Protocol.GAME) return;
 
             player.disconnect(TextComponent.fromLegacy(kick.getReason()));
             awaitedKickTaskCache.invalidate(playerName);

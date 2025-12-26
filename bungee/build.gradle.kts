@@ -7,7 +7,7 @@ plugins {
 extra["bungeecord"] = true
 
 dependencies {
-    //compileOnly(libs.bungeecord)
+    compileOnly(libs.bungeecord)
     compileOnly(libs.floodgate)
     compileOnly(libs.caffeine)
 
@@ -15,6 +15,8 @@ dependencies {
     compileOnly(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
     implementation(libs.bstats.bungeecord)
     implementation(project(":commons"))
+
+    implementation("org.spongepowered:configurate-yaml:4.2.0")
 }
 
 java {

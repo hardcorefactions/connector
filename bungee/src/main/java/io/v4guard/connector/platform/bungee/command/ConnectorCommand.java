@@ -4,6 +4,7 @@ package io.v4guard.connector.platform.bungee.command;
 import io.v4guard.connector.common.CoreInstance;
 import io.v4guard.connector.platform.bungee.command.sub.BlacklistCommand;
 import io.v4guard.connector.platform.bungee.command.sub.WhitelistCommand;
+import io.v4guard.connector.platform.bungee.command.sub.BypassCommand;
 import net.md_5.bungee.api.CommandSender;
 import net.md_5.bungee.api.chat.ComponentBuilder;
 import team.unnamed.commandflow.annotated.CommandClass;
@@ -15,12 +16,13 @@ import java.util.List;
 
 @SubCommandClasses({
     WhitelistCommand.class,
-    BlacklistCommand.class
+    BlacklistCommand.class,
+    BypassCommand.class
 })
 @Command(names = "v4Guard", permission = "v4guard.command")
 public class ConnectorCommand implements CommandClass {
 
-    private final List<String> defaultMessage = List.of("§d▲ §lV4GUARD §7Correct usage: /v4guard <blacklist>/<whitelist>");
+    private final List<String> defaultMessage = List.of("§d▲ §lV4GUARD §7Correct usage: /v4guard <blacklist>/<whitelist/bypass>");
 
     @Command(names = "")
     public void help(@Sender CommandSender source) {

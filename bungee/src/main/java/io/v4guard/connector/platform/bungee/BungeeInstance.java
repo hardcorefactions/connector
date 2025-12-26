@@ -24,6 +24,7 @@ import io.v4guard.connector.platform.bungee.listener.PlayerListener;
 import io.v4guard.connector.platform.bungee.listener.PlayerSettingsListener;
 import io.v4guard.connector.platform.bungee.listener.PluginMessagingListener;
 import io.v4guard.connector.platform.bungee.task.AwaitingKickTask;
+import io.v4guard.connector.platform.bungee.manager.StorageManager;
 import net.md_5.bungee.api.ProxyServer;
 import net.md_5.bungee.api.chat.TextComponent;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
@@ -53,6 +54,7 @@ public class BungeeInstance extends Plugin implements UniversalPlugin {
     private Cache<String, AwaitingKick<String>> awaitedKickTaskCache;
     private AwaitingKickTask awaitedKickTask;
     private CoreInstance coreInstance;
+    private StorageManager storageManager;
 
     private final int METRICS = 16219;
 
@@ -79,6 +81,7 @@ public class BungeeInstance extends Plugin implements UniversalPlugin {
             return;
         }
 
+        this.storageManager = new StorageManager(this);
         int connectionTimeout = ProxyServer.getInstance().getConfig().getTimeout();
 
         if (connectionTimeout < 3000) {
@@ -239,5 +242,9 @@ public class BungeeInstance extends Plugin implements UniversalPlugin {
     @Override
     public PlayerSettingsCheckProcessor getPlayerSettingsCheckProcessor() {
         return playerSettingsProcessor;
+    }
+
+    public StorageManager getStorageManager() {
+        return storageManager;
     }
 }

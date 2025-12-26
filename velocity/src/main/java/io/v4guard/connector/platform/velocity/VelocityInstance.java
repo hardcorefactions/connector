@@ -34,6 +34,7 @@ import io.v4guard.connector.common.command.internal.usage.CustomUsageBuilder;
 import io.v4guard.connector.platform.velocity.listener.PlayerListener;
 import io.v4guard.connector.platform.velocity.listener.PlayerSettingsListener;
 import io.v4guard.connector.platform.velocity.listener.PluginMessagingListener;
+import io.v4guard.connector.platform.velocity.manager.StorageManager;
 import io.v4guard.connector.platform.velocity.task.AwaitingKickTask;
 
 import net.kyori.adventure.text.Component;
@@ -80,6 +81,7 @@ public class VelocityInstance implements UniversalPlugin {
     private VelocityCheckProcessor checkProcessor;
     private PluginMessagingListener brandCheckProcessor;
     private PlayerSettingsListener playerSettingsProcessor;
+    private StorageManager storageManager;
     private final LegacyComponentSerializer legacyComponentSerializer = LegacyComponentSerializer
             .builder()
             .character('§')
@@ -114,6 +116,7 @@ public class VelocityInstance implements UniversalPlugin {
             this.logger.warning("(Velocity) Failed to connect with bStats [WARN]");
         }
 
+        this.storageManager = new StorageManager(this);
         this.checkProcessor = new VelocityCheckProcessor(this);
         this.brandCheckProcessor = new PluginMessagingListener();
         this.playerSettingsProcessor = new PlayerSettingsListener();
@@ -324,5 +327,9 @@ public class VelocityInstance implements UniversalPlugin {
 
     public LegacyComponentSerializer getLegacyComponentSerializer() {
         return legacyComponentSerializer;
+    }
+
+    public StorageManager getStorageManager() {
+        return storageManager;
     }
 }

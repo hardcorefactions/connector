@@ -1,3 +1,6 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+
 plugins {
     `kotlin-dsl`
 }
@@ -8,16 +11,17 @@ repositories {
 }
 
 dependencies {
-    implementation("io.github.goooler.shadow:shadow-gradle-plugin:8.1.7")
+    implementation("com.gradleup.shadow:shadow-gradle-plugin:9.3.0")
 }
 
-
-tasks {
-    compileKotlin {
-        kotlinOptions {
-            //change version
-            jvmTarget = "11"
-        }
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(21))
     }
+}
 
+tasks.withType<KotlinCompile>().configureEach {
+    compilerOptions {
+        jvmTarget.set(JvmTarget.JVM_21)
+    }
 }

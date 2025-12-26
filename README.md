@@ -6,6 +6,9 @@
 
 Today, many servers have zero protection against fraud, VPNs, proxies, and peer-to-peer networks. v4Guard has come to the Minecraft communities to change this and offer a quality solution at an affordable price.
 
+## 🤔 Why a fork?
+I was bored at a random hour and chose to just fork the repository and mess up with the codebase and add somewhat untested bypass system for blacklisted users through both config option and command.
+
 ## 💨 Why v4Guard?
 Reliability is part of the selection process, and at v4Guard, we take our work very seriously. With more than six years of experience in the industry and a team committed to the security and privacy of users.
 

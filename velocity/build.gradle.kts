@@ -16,5 +16,6 @@ dependencies {
         exclude(group = "net.kyori", module = "adventure-text-serializer-plain")
     }
 
+    implementation("org.spongepowered:configurate-yaml:4.2.0")
     implementation(project(":commons"))
 }

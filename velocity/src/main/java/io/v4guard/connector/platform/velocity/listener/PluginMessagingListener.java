@@ -9,6 +9,7 @@ import com.velocitypowered.api.proxy.Player;
 import com.velocitypowered.api.proxy.messages.MinecraftChannelIdentifier;
 import io.v4guard.connector.common.CoreInstance;
 import io.v4guard.connector.common.check.brand.BrandCheckProcessor;
+import io.v4guard.connector.platform.velocity.VelocityInstance;
 
 import java.nio.charset.StandardCharsets;
 
@@ -20,6 +21,7 @@ public class PluginMessagingListener extends BrandCheckProcessor {
     public void onPlayerClientBrand(PlayerClientBrandEvent event, Continuation continuation) {
         Player player = event.getPlayer();
 
+        if (VelocityInstance.get().getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         if (!CoreInstance.get().getRemoteConnection().isReady()) {
             continuation.resume();
             return;
@@ -37,7 +39,7 @@ public class PluginMessagingListener extends BrandCheckProcessor {
 
     @Subscribe
     public void onPluginMessage(PluginMessageEvent event, Continuation continuation) {
-        if (!(event.getSource() instanceof Player)) {
+        if (!(event.getSource() instanceof Player player)) {
             continuation.resume();
             return;
         }
@@ -47,8 +49,7 @@ public class PluginMessagingListener extends BrandCheckProcessor {
             return;
         }
 
-        Player player = (Player) event.getSource();
-
+        if (VelocityInstance.get().getStorageManager().getBypassedUUIDs().contains(player.getUniqueId())) return;
         super.process(
                 player.getUsername()
                 , player.getUniqueId()
@@ -61,6 +62,7 @@ public class PluginMessagingListener extends BrandCheckProcessor {
 
     @Subscribe
     public void onPlayerDisconnect(DisconnectEvent event) {
+        if (VelocityInstance.get().getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         super.onPlayerDisconnect(event.getPlayer().getUniqueId());
     }
 }

@@ -10,6 +10,7 @@ import com.velocitypowered.api.event.connection.PostLoginEvent;
 import com.velocitypowered.api.proxy.Player;
 import io.v4guard.connector.common.CoreInstance;
 import io.v4guard.connector.platform.velocity.VelocityInstance;
+import io.v4guard.connector.platform.velocity.manager.BypassManager;
 
 public class PlayerListener {
 
@@ -23,6 +24,7 @@ public class PlayerListener {
 
     @Subscribe(order = PostOrder.EARLY)
     public void onAsyncLogin(LoginEvent event, Continuation continuation) {
+        if (plugin.getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         if (!event.getResult().isAllowed() || !coreInstance.getRemoteConnection().isReady())  {
             continuation.resume();
             return;
@@ -33,6 +35,7 @@ public class PlayerListener {
 
     @Subscribe(order = PostOrder.EARLY)
     public void onProxyDisconnect(DisconnectEvent event, Continuation continuation) {
+        if (plugin.getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         if (event.getLoginStatus() == LoginStatus.CONFLICTING_LOGIN) {
             continuation.resume();
             return;

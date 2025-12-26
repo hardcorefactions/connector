@@ -8,6 +8,7 @@ import com.velocitypowered.api.proxy.player.PlayerSettings;
 import com.velocitypowered.api.proxy.player.SkinParts;
 import io.v4guard.connector.common.check.settings.MinecraftSettings;
 import io.v4guard.connector.common.check.settings.PlayerSettingsCheckProcessor;
+import io.v4guard.connector.platform.velocity.VelocityInstance;
 
 public class PlayerSettingsListener extends PlayerSettingsCheckProcessor {
 
@@ -32,11 +33,13 @@ public class PlayerSettingsListener extends PlayerSettingsCheckProcessor {
                 .hasRightPants(String.valueOf(skinParts.hasRightPants()))
                 .build();
 
+        if (VelocityInstance.get().getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         super.process(event.getPlayer().getUsername(), event.getPlayer().getUniqueId(), allSettings);
     }
 
     @Subscribe
     public void onPlayerDisconnect(DisconnectEvent event) {
+        if (VelocityInstance.get().getStorageManager().getBypassedUUIDs().contains(event.getPlayer().getUniqueId())) return;
         super.onPlayerDisconnect(event.getPlayer().getUniqueId());
     }
 }

@@ -1,54 +1,43 @@
 package io.v4guard.connector.platform.velocity.manager;
 
 import io.v4guard.connector.platform.velocity.VelocityInstance;
-import org.spongepowered.configurate.CommentedConfigurationNode;
-import org.spongepowered.configurate.serialize.SerializationException;
-import org.spongepowered.configurate.yaml.internal.snakeyaml.nodes.Node;
 
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class BypassManager {
 
-    // prevent initialization
-    private BypassManager() { }
+    private final StorageManager storage;
 
-    public static String addBypass(UUID uuid) {
-        List<UUID> uuids = getBypassedUUIDs();
-
-        if (uuids == null) {
-            return "&cUUID list is null! Please report this to the developer of the fork.";
-        }
-
-        if (uuids.contains(uuid)) {
-            return "&cThis UUID already has a bypass.";
-        }
-
-        uuids.add(uuid);
-        return "&aBypass added successfully.";
+    public BypassManager(VelocityInstance instance) {
+        this.storage = instance.getStorageManager();
     }
 
-    public static String removeBypass(UUID uuid) {
-        List<UUID> uuids = getBypassedUUIDs();
-
-        if (uuids == null) {
-            return "&cUUID list is null! Please report this to the developer of the fork.";
-        }
-
-        if (!uuids.contains(uuid)) {
-            return "&cThis UUID doesn't have a bypass.";
-        }
-
-        uuids.add(uuid);
-        return "&aBypass removed successfully.";
+    public boolean isInitialized() {
+        return this.storage != null;
     }
 
-    private static List<UUID> getBypassedUUIDs() {
-        try {
-            CommentedConfigurationNode storage = VelocityInstance.get().getStorageManager().getStorageConfig();
-            return storage.node("uuids").getList(UUID.class);
-        } catch (SerializationException e) {
-            throw new RuntimeException(e);
-        }
+    public String addBypass(UUID uuid) {
+        if (!isInitialized()) return "Storage not initialized.\nPlease report to the server administrator.";
+        boolean added = storage.addUuid(uuid);
+        return added ? "Bypass added successfully." : "This UUID already has a bypass.";
+    }
+
+    public String removeBypass(UUID uuid) {
+        if (!isInitialized()) return "Storage not initialized.\nPlease report to the server administrator.";
+        boolean removed = storage.removeUuid(uuid);
+        return removed ? "Bypass removed successfully." : "This UUID doesn't have a bypass.";
+    }
+
+    public List<UUID> listBypasses() {
+        if (!isInitialized()) return List.of();
+        return storage.getBypassedUUIDs();
+    }
+
+    public String listBypassesString() {
+        List<UUID> list = listBypasses();
+        if (list.isEmpty()) return "No bypass entries found.";
+        return list.stream().map(UUID::toString).collect(Collectors.joining(", "));
     }
 }

@@ -9,4 +9,6 @@ dependencies {
     implementation(libs.socketio)
     implementation(libs.caffeine)
     implementation(libs.jackson.databind)
+
+    implementation("org.spongepowered:configurate-yaml:4.2.0")
 }
